@@ -6816,3 +6816,37 @@ window.cargarEstadoDesdeNube =
 // ======================================
 
 actualizarPantalla();
+
+// ======================================
+// PWA - SERVICE WORKER
+// ======================================
+
+if ("serviceWorker" in navigator) {
+
+    window.addEventListener(
+        "load",
+        function() {
+
+            navigator.serviceWorker
+                .register("./service-worker.js")
+                .then(function(registro) {
+
+                    console.log(
+                        "✅ Service Worker registrado:",
+                        registro.scope
+                    );
+
+                })
+                .catch(function(error) {
+
+                    console.error(
+                        "❌ Error Service Worker:",
+                        error
+                    );
+
+                });
+
+        }
+    );
+
+}
