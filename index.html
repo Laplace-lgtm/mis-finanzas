@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Mis Finanzas</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ENCABEZADO -->
+
+    <header class="topbar">
+
+        <div>
+            <h1>💰 Mis Finanzas</h1>
+            <p>Control personal de dinero</p>
+        </div>
+
+        <div class="fecha" id="fechaActual">
+            Panel financiero
+        </div>
+
+    </header>
+
+
+    <main
+    id="pantalla-inicio"
+    class="contenedor pantalla pantalla-activa"
+    >
+
+        <!-- SALDO PRINCIPAL -->
+
+        <section class="saldo-principal">
+
+            <p>Disponible para gastar</p>
+
+            <h2 id="saldo">$0.00</h2>
+
+            <span>
+                Después de descontar el ahorro reservado
+            </span>
+
+        </section>
+
+
+        <!-- TARJETAS -->
+
+        <section class="resumen">
+
+            <div class="tarjeta ingreso">
+
+                <div class="icono">
+                    ↑
+                </div>
+
+                <div>
+                    <p>Ingresos</p>
+                    <h2 id="ingresos">$0.00</h2>
+                </div>
+
+            </div>
+
+
+            <div class="tarjeta gasto">
+
+                <div class="icono">
+                    ↓
+                </div>
+
+                <div>
+                    <p>Gastos</p>
+                    <h2 id="gastos">$0.00</h2>
+                </div>
+
+            </div>
+
+
+            <div class="tarjeta">
+
+                <div class="icono">
+                    💳
+                </div>
+
+                <div>
+                    <p>Deudas</p>
+                    <h2 id="deudasInicio">$0.00</h2>
+                </div>
+
+            </div>
+
+
+            <div class="tarjeta">
+
+                <div class="icono">
+                    🎯
+                </div>
+
+                <div>
+                    <p>Ahorro</p>
+                    <h2 id="ahorroInicio">$0.00</h2>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CONTENIDO -->
+
+        <section class="grid-principal">
+
+            <!-- NUEVO MOVIMIENTO -->
+
+            <div class="panel">
+
+                <div class="titulo-panel">
+
+                    <div>
+                        <h2>Nuevo movimiento</h2>
+                        <p>Registra un ingreso o gasto</p>
+                    </div>
+
+                </div>
+
+
+                <form id="formMovimiento">
+
+                    <label for="tipo">
+                        Tipo
+                    </label>
+
+                    <select id="tipo">
+
+                        <option value="ingreso">
+                            Ingreso
+                        </option>
+
+                        <option value="gasto">
+                            Gasto
+                        </option>
+
+                    </select>
+
+
+                    <label for="monto">
+                        Monto
+                    </label>
+
+                    <input
+                        type="number"
+                        id="monto"
+                        step="0.01"
+                        min="0"
+                        placeholder="Ejemplo: 25.50"
+                        required
+                    >
+
+
+                    <label for="categoria">
+                        Categoría
+                    </label>
+
+                    <select id="categoria">
+
+                        <option>Trabajo</option>
+                        <option>Comida</option>
+                        <option>Transporte</option>
+                        <option>Universidad</option>
+                        <option>Entretenimiento</option>
+                        <option>Servicios</option>
+                        <option>Deudas</option>
+                        <option>Otros</option>
+
+                    </select>
+
+
+                    <label for="descripcion">
+                        Descripción
+                    </label>
+
+                    <input
+                        type="text"
+                        id="descripcion"
+                        placeholder="Ejemplo: Almuerzo"
+                    >
+
+
+                    <button type="submit">
+                        + Guardar movimiento
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- HISTORIAL -->
+
+            <div class="panel">
+
+                <div class="titulo-panel">
+
+                    <div>
+                        <h2>Últimos movimientos</h2>
+                        <p>Actividad reciente</p>
+                    </div>
+
+                </div>
+
+
+                <div id="listaMovimientos">
+
+                    <p class="vacio">
+                        Todavía no existen movimientos.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+<!-- =========================
+     PANTALLA GASTOS
+========================= -->
+
+<main
+    id="pantalla-gastos"
+    class="contenedor pantalla"
+>
+
+    <div class="encabezado-pantalla">
+
+        <div>
+
+            <h1>📊 Gastos y presupuesto</h1>
+
+            <p>
+                Controla cuánto estás gastando
+                durante el mes.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- RESUMEN -->
+
+    <section class="resumen resumen-presupuesto">
+
+        <div class="tarjeta">
+
+            <div class="icono">
+                💸
+            </div>
+
+            <div>
+
+                <p>Gastado este mes</p>
+
+                <h2 id="gastoMes">
+                    $0.00
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="tarjeta">
+
+            <div class="icono">
+                📋
+            </div>
+
+            <div>
+
+                <p>Presupuesto total</p>
+
+                <h2 id="presupuestoTotal">
+                    $0.00
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="tarjeta">
+
+            <div class="icono">
+                ✅
+            </div>
+
+            <div>
+
+                <p>Disponible presupuesto</p>
+
+                <h2 id="presupuestoDisponible">
+                    $0.00
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="tarjeta">
+
+            <div class="icono">
+                📅
+            </div>
+
+            <div>
+
+                <p>Puedes gastar por día</p>
+
+                <h2 id="gastoDiario">
+                    $0.00
+                </h2>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <section class="grid-presupuesto">
+
+
+        <!-- CONFIGURAR -->
+
+        <div class="panel">
+
+            <div class="titulo-panel">
+
+                <div>
+
+                    <h2>Configurar presupuesto</h2>
+
+                    <p>
+                        Define cuánto quieres gastar
+                        por categoría este mes.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form id="formPresupuesto">
+
+                <label for="categoriaPresupuesto">
+                    Categoría
+                </label>
+
+
+                <select id="categoriaPresupuesto">
+
+                    <option>Comida</option>
+
+                    <option>Transporte</option>
+
+                    <option>Universidad</option>
+
+                    <option>Entretenimiento</option>
+
+                    <option>Servicios</option>
+
+                    <option>Deudas</option>
+
+                    <option>Otros</option>
+
+                </select>
+
+
+                <label for="limitePresupuesto">
+                    Límite mensual
+                </label>
+
+
+                <input
+                    id="limitePresupuesto"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    placeholder="Ejemplo: 150"
+                    required
+                >
+
+
+                <button type="submit">
+                    Guardar presupuesto
+                </button>
+
+            </form>
+
+        </div>
+
+
+
+        <!-- CATEGORÍAS -->
+
+        <div class="panel">
+
+            <div class="titulo-panel">
+
+                <div>
+
+                    <h2>Presupuesto del mes</h2>
+
+                    <p id="nombreMesPresupuesto">
+                        Mes actual
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div id="listaPresupuestos">
+
+                <p class="vacio">
+                    Todavía no has definido presupuestos.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =========================
+        PLAN MENSUAL
+    ========================= -->
+
+    <section class="panel plan-mensual">
+
+        <div class="titulo-panel">
+
+            <div>
+
+                <h2>📅 Plan mensual</h2>
+
+                <p>
+                    Registra ingresos recurrentes
+                    y gastos fijos esperados.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- RESUMEN -->
+
+        <div class="resumen-plan">
+
+            <div class="plan-resumen-item">
+
+                <small>
+                    Ingresos esperados
+                </small>
+
+                <strong id="ingresosEsperados">
+                    $0.00
+                </strong>
+
+            </div>
+
+
+            <div class="plan-resumen-item">
+
+                <small>
+                    Gastos fijos
+                </small>
+
+                <strong id="gastosFijosEsperados">
+                    $0.00
+                </strong>
+
+            </div>
+
+
+            <div class="plan-resumen-item">
+
+                <small>
+                    Balance proyectado
+                </small>
+
+                <strong id="balanceProyectado">
+                    $0.00
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="grid-plan-mensual">
+
+
+            <!-- FORMULARIO -->
+
+            <div>
+
+                <h3>
+                    Añadir movimiento recurrente
+                </h3>
+
+
+                <form id="formRecurrente">
+
+                    <label for="tipoRecurrente">
+                        Tipo
+                    </label>
+
+                    <select id="tipoRecurrente">
+
+                        <option value="ingreso">
+                            Ingreso recurrente
+                        </option>
+
+                        <option value="gasto">
+                            Gasto fijo
+                        </option>
+
+                    </select>
+
+
+                    <label for="nombreRecurrente">
+                        Nombre
+                    </label>
+
+                    <input
+                        id="nombreRecurrente"
+                        type="text"
+                        placeholder="Ejemplo: Sueldo"
+                        required
+                    >
+
+
+                    <label for="montoRecurrente">
+                        Monto mensual
+                    </label>
+
+                    <input
+                        id="montoRecurrente"
+                        type="number"
+                        min="0.01"
+                        step="0.01"
+                        placeholder="Ejemplo: 500"
+                        required
+                    >
+
+
+                    <label for="diaRecurrente">
+                        Día del mes
+                    </label>
+
+                    <input
+                        id="diaRecurrente"
+                        type="number"
+                        min="1"
+                        max="31"
+                        placeholder="Ejemplo: 30"
+                        required
+                    >
+
+
+                    <label for="categoriaRecurrente">
+                        Categoría
+                    </label>
+
+                    <select id="categoriaRecurrente">
+
+                        <option>Trabajo</option>
+                        <option>Comida</option>
+                        <option>Transporte</option>
+                        <option>Universidad</option>
+                        <option>Entretenimiento</option>
+                        <option>Servicios</option>
+                        <option>Deudas</option>
+                        <option>Otros</option>
+
+                    </select>
+
+
+                    <button type="submit">
+                        + Guardar recurrente
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- LISTA -->
+
+            <div>
+
+                <h3>
+                    Movimientos planificados
+                </h3>
+
+                <div id="listaRecurrentes">
+
+                    <p class="vacio">
+                        Todavía no hay movimientos recurrentes.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<!-- =========================
+     PANTALLA DEUDAS
+========================= -->
+
+<!-- =========================
+     PANTALLA DEUDAS
+========================= -->
+
+<main
+    id="pantalla-deudas"
+    class="contenedor pantalla"
+>
+
+    <div class="encabezado-pantalla">
+
+        <div>
+            <h1>💳 Deudas</h1>
+            <p>
+                Controla lo que debes y el dinero
+                que otras personas te deben.
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- RESUMEN -->
+
+    <section class="resumen resumen-deudas">
+
+        <div class="tarjeta">
+
+            <div class="icono">
+                ↓
+            </div>
+
+            <div>
+                <p>Yo debo</p>
+                <h2 id="totalYoDebo">$0.00</h2>
+            </div>
+
+        </div>
+
+
+        <div class="tarjeta">
+
+            <div class="icono">
+                ↑
+            </div>
+
+            <div>
+                <p>Me deben</p>
+                <h2 id="totalMeDeben">$0.00</h2>
+            </div>
+
+        </div>
+
+
+        <div class="tarjeta">
+
+            <div class="icono">
+                ⚖️
+            </div>
+
+            <div>
+                <p>Balance de deudas</p>
+                <h2 id="balanceDeudas">$0.00</h2>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- FORMULARIO + LISTADO -->
+
+    <section class="grid-deudas">
+
+
+        <!-- NUEVA DEUDA -->
+
+        <div class="panel">
+
+            <div class="titulo-panel">
+
+                <div>
+                    <h2>Nueva deuda</h2>
+
+                    <p>
+                        Registra dinero pendiente.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <form id="formDeuda">
+
+
+                <label for="tipoDeuda">
+                    Tipo
+                </label>
+
+                <select id="tipoDeuda">
+
+                    <option value="yo_debo">
+                        Yo debo
+                    </option>
+
+                    <option value="me_deben">
+                        Me deben
+                    </option>
+
+                </select>
+
+
+                <label for="personaDeuda">
+                    Persona o entidad
+                </label>
+
+                <input
+                    id="personaDeuda"
+                    type="text"
+                    placeholder="Ejemplo: Juan, Banco, Mamá..."
+                    required
+                >
+
+
+                <label for="montoDeuda">
+                    Monto
+                </label>
+
+                <input
+                    id="montoDeuda"
+                    type="number"
+                    min="0.01"
+                    step="0.01"
+                    placeholder="Ejemplo: 100"
+                    required
+                >
+
+
+                <label for="fechaDeuda">
+                    Fecha límite
+                </label>
+
+                <input
+                    id="fechaDeuda"
+                    type="date"
+                >
+
+
+                <label for="descripcionDeuda">
+                    Descripción
+                </label>
+
+                <input
+                    id="descripcionDeuda"
+                    type="text"
+                    placeholder="Ejemplo: Préstamo"
+                >
+
+
+                <button type="submit">
+                    + Guardar deuda
+                </button>
+
+
+            </form>
+
+        </div>
+
+
+
+        <!-- LISTA -->
+
+        <div class="panel">
+
+            <div class="titulo-panel">
+
+                <div>
+                    <h2>Deudas pendientes</h2>
+
+                    <p>
+                        Personas y pagos pendientes.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div id="listaDeudas">
+
+                <p class="vacio">
+                    Todavía no tienes deudas registradas.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================
+     PANTALLA METAS
+========================= -->
+
+<main
+    id="pantalla-metas"
+    class="contenedor pantalla"
+>
+
+    <div class="encabezado-pantalla">
+
+        <div>
+
+            <h1>🎯 Metas y ahorro</h1>
+
+            <p>
+                Reserva dinero para tus objetivos
+                sin confundirlo con dinero disponible.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- RESUMEN -->
+
+    <section class="resumen resumen-metas">
+
+        <div class="tarjeta">
+
+            <div class="icono">
+                💰
+            </div>
+
+            <div>
+                <p>Ahorro reservado</p>
+                <h2 id="totalAhorradoMetas">
+                    $0.00
+                </h2>
+            </div>
+
+        </div>
+
+
+        <div class="tarjeta">
+
+            <div class="icono">
+                🎯
+            </div>
+
+            <div>
+                <p>Objetivo total</p>
+                <h2 id="totalObjetivosMetas">
+                    $0.00
+                </h2>
+            </div>
+
+        </div>
+
+
+        <div class="tarjeta">
+
+            <div class="icono">
+                📈
+            </div>
+
+            <div>
+                <p>Falta por ahorrar</p>
+                <h2 id="totalFaltaMetas">
+                    $0.00
+                </h2>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <section class="grid-metas">
+
+
+        <!-- CREAR META -->
+
+        <div class="panel">
+
+            <div class="titulo-panel">
+
+                <div>
+
+                    <h2>Nueva meta</h2>
+
+                    <p>
+                        Define un objetivo de ahorro.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form id="formMeta">
+
+
+                <label for="nombreMeta">
+                    Nombre
+                </label>
+
+                <input
+                    id="nombreMeta"
+                    type="text"
+                    placeholder="Ejemplo: Laptop"
+                    required
+                >
+
+
+                <label for="objetivoMeta">
+                    Monto objetivo
+                </label>
+
+                <input
+                    id="objetivoMeta"
+                    type="number"
+                    min="0.01"
+                    step="0.01"
+                    placeholder="Ejemplo: 1200"
+                    required
+                >
+
+
+                <label for="fechaMeta">
+                    Fecha objetivo
+                </label>
+
+                <input
+                    id="fechaMeta"
+                    type="date"
+                >
+
+
+                <button type="submit">
+                    + Crear meta
+                </button>
+
+
+            </form>
+
+        </div>
+
+
+
+        <!-- LISTA -->
+
+        <div class="panel">
+
+            <div class="titulo-panel">
+
+                <div>
+
+                    <h2>Mis metas</h2>
+
+                    <p>
+                        Sigue el progreso de tus ahorros.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div id="listaMetas">
+
+                <p class="vacio">
+                    Todavía no tienes metas.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================
+     PANTALLA IA
+========================= -->
+
+<main
+    id="pantalla-ia"
+    class="contenedor pantalla"
+>
+
+    <div class="encabezado-pantalla">
+
+        <div>
+            <h1>🤖 Asesor financiero</h1>
+
+            <p>
+                Analiza tus movimientos y recibe recomendaciones.
+            </p>
+        </div>
+
+    </div>
+
+    <!-- =========================
+        SALUD FINANCIERA
+    ========================= -->
+
+    <section class="panel-salud">
+
+        <div class="salud-principal">
+
+            <div>
+
+                <p class="salud-etiqueta">
+                    Salud financiera
+                </p>
+
+                <div class="salud-puntaje">
+
+                    <strong id="puntajeSalud">
+                        0
+                    </strong>
+
+                    <span>
+                        / 100
+                    </span>
+
+                </div>
+
+                <p id="estadoSalud">
+                    Analizando...
+                </p>
+
+            </div>
+
+            <div
+                class="salud-indicador"
+                id="iconoSalud"
+            >
+                ⚪
+            </div>
+
+        </div>
+
+
+        <div class="salud-datos">
+
+            <div class="salud-dato">
+
+                <small>
+                    💰 Disponible real
+                </small>
+
+                <strong id="saludDisponible">
+                    $0.00
+                </strong>
+
+            </div>
+
+
+            <div class="salud-dato">
+
+                <small>
+                    📊 Margen presupuesto
+                </small>
+
+                <strong id="saludPresupuesto">
+                    $0.00
+                </strong>
+
+            </div>
+
+
+            <div class="salud-dato">
+
+                <small>
+                    📅 Referencia diaria
+                </small>
+
+                <strong id="saludDiario">
+                    $0.00
+                </strong>
+
+            </div>
+
+
+            <div class="salud-dato">
+
+                <small>
+                    💳 Yo debo
+                </small>
+
+                <strong id="saludDeudas">
+                    $0.00
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="panel alertas-financieras">
+
+        <div class="titulo-panel">
+
+            <div>
+
+                <h2>
+                    🔔 Alertas y recomendaciones
+                </h2>
+
+                <p>
+                    Análisis automático de tus datos actuales.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div id="listaAlertasFinancieras">
+
+            <p class="vacio">
+                Analizando tus finanzas...
+            </p>
+
+        </div>
+
+    </section>
+
+    <section class="panel">
+
+        <div class="ia-cabecera">
+
+            <div class="ia-icono">
+                🤖
+            </div>
+
+            <div>
+                <h2>Asistente financiero</h2>
+
+                <p class="texto-secundario">
+                    Próximamente analizará tus finanzas.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div
+            class="chat-ia"
+            id="chatIA"
+        >
+
+            <div class="mensaje-ia">
+
+                👋 Hola. Ya puedo analizar localmente
+                tus gastos, ingresos, presupuestos,
+                deudas y metas.
+
+            </div>
+
+        </div>
+
+        <div class="preguntas-rapidas">
+
+            <button
+                type="button"
+                data-pregunta="resumen"
+            >
+                💰 Resumen
+            </button>
+
+            <button
+                type="button"
+                data-pregunta="gastos"
+            >
+                📊 Mis gastos
+            </button>
+
+            <button
+                type="button"
+                data-pregunta="deudas"
+            >
+                💳 Mis deudas
+            </button>
+
+            <button
+                type="button"
+                data-pregunta="metas"
+            >
+                🎯 Mis metas
+            </button>
+
+            <button
+                type="button"
+                data-pregunta="consejos"
+            >
+                💡 Consejos
+            </button>
+
+        </div>
+
+        <div class="entrada-ia">
+
+            <input
+                id="inputIA"
+                type="text"
+                placeholder="Ejemplo: ¿Cuánto puedo gastar?"
+                autocomplete="off"
+            >
+
+            <button
+                id="btnEnviarIA"
+                type="button"
+            >
+                Enviar
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+    <!-- NAVEGACIÓN -->
+
+   <nav class="menu-inferior">
+
+    <button
+        type="button"
+        class="boton-menu activo"
+        data-pantalla="inicio"
+    >
+        <span>🏠</span>
+        Inicio
+    </button>
+
+    <button
+        type="button"
+        class="boton-menu"
+        data-pantalla="gastos"
+    >
+        <span>📊</span>
+        Gastos
+    </button>
+
+    <button
+        type="button"
+        class="boton-menu"
+        data-pantalla="deudas"
+    >
+        <span>💳</span>
+        Deudas
+    </button>
+
+    <button
+        type="button"
+        class="boton-menu"
+        data-pantalla="metas"
+    >
+        <span>🎯</span>
+        Metas
+    </button>
+
+    <button
+        type="button"
+        class="boton-menu"
+        data-pantalla="ia"
+    >
+        <span>🤖</span>
+        IA
+    </button>
+
+</nav>
+
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>
