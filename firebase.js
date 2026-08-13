@@ -141,6 +141,8 @@ onAuthStateChanged(
             
             escucharMovimientosNube(user);
 
+            escucharEstadoNube(user);
+
             if (btnLoginGoogle) {
 
                 btnLoginGoogle.style.display =
@@ -177,6 +179,17 @@ onAuthStateChanged(
             window.usuarioFirebase =
                 null;
 
+            // ==========================
+            // DETENER OTROS MÓDULOS
+            // ==========================
+
+            detenerEscuchasEstado
+                .forEach(
+                    detener => detener()
+                );
+
+
+            detenerEscuchasEstado = [];
 
             if (btnLoginGoogle) {
 
@@ -407,5 +420,216 @@ function escucharMovimientosNube(user) {
             }
 
         );
+
+}
+
+// ======================================
+// SINCRONIZACIÓN GENERAL DE ESTADO
+// ======================================
+
+let detenerEscuchasEstado = [];
+
+
+// ======================================
+// GUARDAR UN MÓDULO EN FIRESTORE
+// ======================================
+
+window.guardarEstadoNube =
+    async function(nombre, datos) {
+
+        const user =
+            auth.currentUser;
+
+
+        if (!user) {
+
+            console.warn(
+                "No hay usuario conectado."
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            const referencia =
+                doc(
+                    db,
+                    "users",
+                    user.uid,
+                    "estado",
+                    nombre
+                );
+
+
+            await setDoc(
+                referencia,
+                datos
+            );
+
+
+            console.log(
+                "☁️ Estado guardado:",
+                nombre
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Error guardando " +
+                nombre +
+                ":",
+                error
+            );
+
+        }
+
+    };
+
+    // ======================================
+// ESCUCHAR ESTADO EN TIEMPO REAL
+// ======================================
+
+function escucharEstadoNube(user) {
+
+    // Detener escuchas anteriores
+
+    detenerEscuchasEstado
+        .forEach(
+            detener => detener()
+        );
+
+
+    detenerEscuchasEstado = [];
+
+
+    const modulos = [
+
+        "deudas",
+
+        "metas",
+
+        "presupuestos",
+
+        "recurrentes"
+
+    ];
+
+
+    modulos.forEach(
+        nombre => {
+
+            const referencia =
+                doc(
+                    db,
+                    "users",
+                    user.uid,
+                    "estado",
+                    nombre
+                );
+
+
+            const detener =
+                onSnapshot(
+
+                    referencia,
+
+                    async function(snapshot) {
+
+                        // ==========================
+                        // YA EXISTE EN LA NUBE
+                        // ==========================
+
+                        if (snapshot.exists()) {
+
+                            const datos =
+                                snapshot.data();
+
+
+                            console.log(
+                                "☁️ Recibido:",
+                                nombre
+                            );
+
+
+                            if (
+                                window
+                                .cargarEstadoDesdeNube
+                            ) {
+
+                                window
+                                    .cargarEstadoDesdeNube(
+                                        nombre,
+                                        datos
+                                    );
+
+                            }
+
+
+                            return;
+
+                        }
+
+
+                        // ==========================
+                        // TODAVÍA NO EXISTE
+                        // ==========================
+
+                        console.log(
+                            "☁️ No existe " +
+                            nombre +
+                            ". Migrando datos locales..."
+                        );
+
+
+                        if (
+                            window
+                            .obtenerEstadoLocalParaFirebase
+                        ) {
+
+                            const local =
+                                window
+                                    .obtenerEstadoLocalParaFirebase(
+                                        nombre
+                                    );
+
+
+                            if (local) {
+
+                                await setDoc(
+                                    referencia,
+                                    local
+                                );
+
+                            }
+
+                        }
+
+                    },
+
+                    function(error) {
+
+                        console.error(
+                            "Error escuchando " +
+                            nombre +
+                            ":",
+                            error
+                        );
+
+                    }
+
+                );
+
+
+            detenerEscuchasEstado.push(
+                detener
+            );
+
+        }
+    );
 
 }

@@ -983,6 +983,24 @@ function guardarDeudas() {
         JSON.stringify(deudas)
     );
 
+
+    if (
+        window.guardarEstadoNube
+    ) {
+
+        window.guardarEstadoNube(
+
+            "deudas",
+
+            {
+                items:
+                    deudas
+            }
+
+        );
+
+    }
+
 }
 
 
@@ -1982,6 +2000,24 @@ function guardarMetas() {
         JSON.stringify(metas)
     );
 
+
+    if (
+        window.guardarEstadoNube
+    ) {
+
+        window.guardarEstadoNube(
+
+            "metas",
+
+            {
+                items:
+                    metas
+            }
+
+        );
+
+    }
+
 }
 
 
@@ -2768,6 +2804,23 @@ function guardarPresupuestos() {
         )
 
     );
+
+    if (
+        window.guardarEstadoNube
+    ) {
+
+        window.guardarEstadoNube(
+
+            "presupuestos",
+
+            {
+                porMes:
+                    presupuestosPorMes
+            }
+
+        );
+
+    }
 
 }
 
@@ -5927,6 +5980,24 @@ function guardarRecurrentes() {
 
     );
 
+
+    if (
+        window.guardarEstadoNube
+    ) {
+
+        window.guardarEstadoNube(
+
+            "recurrentes",
+
+            {
+                items:
+                    recurrentes
+            }
+
+        );
+
+    }
+
 }
 
 function obtenerProximaFechaRecurrente(
@@ -6450,6 +6521,295 @@ function eliminarRecurrente(id) {
 }
 
 actualizarRecurrentes();
+
+// ======================================
+// ENTREGAR ESTADO LOCAL A FIREBASE
+// ======================================
+
+window.obtenerEstadoLocalParaFirebase =
+    function(nombre) {
+
+        if (nombre === "deudas") {
+
+            return {
+
+                items:
+                    deudas
+
+            };
+
+        }
+
+
+        if (nombre === "metas") {
+
+            return {
+
+                items:
+                    metas
+
+            };
+
+        }
+
+
+        if (
+            nombre ===
+            "presupuestos"
+        ) {
+
+            return {
+
+                porMes:
+                    presupuestosPorMes
+
+            };
+
+        }
+
+
+        if (
+            nombre ===
+            "recurrentes"
+        ) {
+
+            return {
+
+                items:
+                    recurrentes
+
+            };
+
+        }
+
+
+        return null;
+
+    };
+
+// ======================================
+// RECIBIR ESTADO DESDE FIREBASE
+// ======================================
+
+window.cargarEstadoDesdeNube =
+    function(nombre, datos) {
+
+
+        // ==========================
+        // DEUDAS
+        // ==========================
+
+        if (nombre === "deudas") {
+
+            deudas =
+                Array.isArray(
+                    datos.items
+                )
+                    ? datos.items
+                    : [];
+
+
+            // Compatibilidad con
+            // historial de pagos
+
+            deudas =
+                deudas.map(
+                    deuda => ({
+
+                        ...deuda,
+
+                        pagos:
+                            Array.isArray(
+                                deuda.pagos
+                            )
+                                ? deuda.pagos
+                                : []
+
+                    })
+                );
+
+
+            localStorage.setItem(
+
+                "deudas",
+
+                JSON.stringify(
+                    deudas
+                )
+
+            );
+
+
+            actualizarDeudas();
+
+        }
+
+
+
+        // ==========================
+        // METAS
+        // ==========================
+
+        if (nombre === "metas") {
+
+            metas =
+                Array.isArray(
+                    datos.items
+                )
+                    ? datos.items
+                    : [];
+
+
+            metas =
+                metas.map(
+                    meta => ({
+
+                        ...meta,
+
+                        aportes:
+                            Array.isArray(
+                                meta.aportes
+                            )
+                                ? meta.aportes
+                                : []
+
+                    })
+                );
+
+
+            localStorage.setItem(
+
+                "metas",
+
+                JSON.stringify(
+                    metas
+                )
+
+            );
+
+
+            actualizarMetas();
+
+            actualizarPantalla();
+
+        }
+
+
+
+        // ==========================
+        // PRESUPUESTOS
+        // ==========================
+
+        if (
+            nombre ===
+            "presupuestos"
+        ) {
+
+            presupuestosPorMes =
+                datos.porMes &&
+                typeof datos.porMes
+                    === "object"
+
+                    ? datos.porMes
+
+                    : {};
+
+
+            localStorage.setItem(
+
+                "presupuestosPorMes",
+
+                JSON.stringify(
+                    presupuestosPorMes
+                )
+
+            );
+
+
+            presupuestos =
+                obtenerPresupuestosMesActual();
+
+
+            if (
+                typeof
+                mostrarPresupuestosBasicos
+                === "function"
+            ) {
+
+                mostrarPresupuestosBasicos();
+
+            }
+
+
+            if (
+                typeof
+                actualizarResumenPresupuesto
+                === "function"
+            ) {
+
+                actualizarResumenPresupuesto();
+
+            }
+
+        }
+
+
+
+        // ==========================
+        // RECURRENTES
+        // ==========================
+
+        if (
+            nombre ===
+            "recurrentes"
+        ) {
+
+            recurrentes =
+                Array.isArray(
+                    datos.items
+                )
+                    ? datos.items
+                    : [];
+
+
+            localStorage.setItem(
+
+                "recurrentes",
+
+                JSON.stringify(
+                    recurrentes
+                )
+
+            );
+
+
+            actualizarRecurrentes();
+
+        }
+
+
+
+        // ==========================
+        // ACTUALIZAR IA
+        // ==========================
+
+        if (
+            typeof
+            actualizarPanelSaludLocal
+            === "function"
+        ) {
+
+            actualizarPanelSaludLocal();
+
+        }
+
+
+        console.log(
+            "✅ Módulo sincronizado:",
+            nombre
+        );
+
+    };
 
 // ======================================
 // INICIAR APLICACIÓN
