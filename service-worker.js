@@ -1,4 +1,4 @@
-const CACHE_NAME = "mis-finanzas-v2";
+const CACHE_NAME = "mis-finanzas-v3";
 
 const APP_SHELL = [
     "./",
@@ -7,10 +7,10 @@ const APP_SHELL = [
     "./app.js?v=5",
     "./firebase.js?v=5",
     "./manifest.json",
-    "./icons/icon-180.png",
-    "./icons/icon-192.png",
-    "./icons/icon-512.png",
-    "./icons/icon-512-maskable.png"
+    "./icon-180.png",
+    "./icon-192.png",
+    "./icon-512.png",
+    "./icon-512-maskable.png"
 ];
 
 self.addEventListener("install", function(event) {
