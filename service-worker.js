@@ -1,11 +1,11 @@
-const CACHE_NAME = "mis-finanzas-v1";
+const CACHE_NAME = "mis-finanzas-v2";
 
 const APP_SHELL = [
     "./",
     "./index.html",
-    "./style.css?v=4",
-    "./app.js?v=4",
-    "./firebase.js?v=4",
+    "./style.css?v=5",
+    "./app.js?v=5",
+    "./firebase.js?v=5",
     "./manifest.json",
     "./icons/icon-180.png",
     "./icons/icon-192.png",

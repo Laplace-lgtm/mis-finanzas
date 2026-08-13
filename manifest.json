@@ -1,9 +1,10 @@
 {
+  "id": "/mis-finanzas/",
   "name": "Mis Finanzas",
   "short_name": "Finanzas",
   "description": "Control personal de ingresos, gastos, deudas, metas y presupuestos.",
-  "start_url": "./",
-  "scope": "./",
+  "start_url": "/mis-finanzas/",
+  "scope": "/mis-finanzas/",
   "display": "standalone",
   "background_color": "#f4f6f8",
   "theme_color": "#111827",

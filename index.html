@@ -11,7 +11,7 @@
 
     <title>Mis Finanzas</title>
 
-    <link rel="stylesheet" href="style.css?v=4">
+    <link rel="stylesheet" href="style.css?v=5">
 
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#111827">
@@ -1356,8 +1356,23 @@
 </nav>
 
 
-<script src="app.js?v=4"></script>
-<script type="module" src="firebase.js?v=4"></script>
+<script src="app.js?v=5"></script>
+<script type="module" src="firebase.js?v=5"></script>
+
+<script>
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+        navigator.serviceWorker
+            .register("./service-worker.js", { scope: "./" })
+            .then(function (registro) {
+                console.log("✅ PWA activa. Service Worker:", registro.scope);
+            })
+            .catch(function (error) {
+                console.error("❌ Error registrando Service Worker:", error);
+            });
+    });
+}
+</script>
 
 </body>
 </html>
