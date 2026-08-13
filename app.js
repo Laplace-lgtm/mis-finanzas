@@ -20,6 +20,36 @@ let movimientos =
     JSON.parse(localStorage.getItem("movimientos")) || [];
 
 // ======================================
+// RECIBIR MOVIMIENTOS DESDE FIREBASE
+// ======================================
+
+window.cargarMovimientosDesdeNube =
+    function(datos) {
+
+        movimientos =
+            Array.isArray(datos)
+                ? datos
+                : [];
+
+
+        localStorage.setItem(
+            "movimientos",
+            JSON.stringify(
+                movimientos
+            )
+        );
+
+
+        actualizarPantalla();
+
+
+        console.log(
+            "✅ App actualizada desde Firebase"
+        );
+
+    };
+
+// ======================================
 // METAS DE AHORRO
 // ======================================
 
@@ -206,7 +236,11 @@ formulario.addEventListener(
 
         movimientos.push(movimiento);
 
-
+        if (window.guardarMovimientoNube) {
+            window.guardarMovimientoNube(
+                movimiento
+            );
+        }
         guardarDatos();
 
         actualizarPantalla();
@@ -626,6 +660,17 @@ function editarMovimiento(id) {
 
     guardarDatos();
 
+    // ACTUALIZAR TAMBIÉN EN FIREBASE
+
+    if (
+        window.guardarMovimientoNube
+    ) {
+
+        window.guardarMovimientoNube(
+            movimiento
+        );
+
+    }
     actualizarPantalla();
 
 
@@ -699,6 +744,19 @@ function eliminarMovimiento(id) {
             movimiento =>
                 movimiento.id !== id
         );
+
+
+    // ELIMINAR TAMBIÉN DE FIREBASE
+
+    if (
+        window.eliminarMovimientoNube
+    ) {
+
+        window.eliminarMovimientoNube(
+            id
+        );
+
+    }
 
 
     guardarDatos();
@@ -1441,6 +1499,18 @@ function crearMovimientoAutomatico(
 
     movimientos.push(movimiento);
 
+
+    // GUARDAR TAMBIÉN EN FIREBASE
+
+    if (
+        window.guardarMovimientoNube
+    ) {
+
+        window.guardarMovimientoNube(
+            movimiento
+        );
+
+    }
 
     guardarDatos();
 

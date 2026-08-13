@@ -29,8 +29,34 @@
             Panel financiero
         </div>
 
+        <div id="zonaUsuario">
+
+            <button
+                id="btnLoginGoogle"
+                type="button"
+            >
+                Iniciar sesión con Google
+            </button>
+
+            <div
+                id="usuarioConectado"
+                style="display:none;"
+            >
+                <span id="nombreUsuario"></span>
+
+                <button
+                    id="btnCerrarSesion"
+                    type="button"
+                >
+                    Salir
+                </button>
+            </div>
+
+        </div>
+
     </header>
 
+    
 
     <main
     id="pantalla-inicio"
@@ -1322,8 +1348,12 @@
 </nav>
 
 
-    <script src="app.js"></script>
+<script src="app.js"></script>
+
+<script
+    type="module"
+    src="firebase.js"
+></script>
 
 </body>
-
 </html>
